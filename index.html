@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI ละคร Studio — All-in-One</title>
+<style>
+:root{--bg:#0b0618;--card:#140c2b;--line:#2c1d52;--tx:#e9e4ff;--mu:#8f84b8;--a:#ff4fd8;--b:#7a5cff;--c:#4ff0d0;--glow:0 0 14px rgba(255,79,216,.55)}
+body.syn{--bg:#12062b;--card:#1d0b3a;--line:#4a1f7a;--a:#ff9a3c;--b:#ff2e93;--c:#3cf2ff;--glow:0 0 14px rgba(255,154,60,.55)}
+body.nonneon{--glow:none}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#2a0f55 0,var(--bg) 45%);color:var(--tx);font:14px/1.5 "Noto Sans Thai","Sarabun",system-ui,sans-serif}
+header{text-align:center;padding:28px 16px 8px}h1{margin:0;font-size:34px;color:#fff;text-shadow:var(--glow)}
+header p{max-width:760px;margin:8px auto;color:var(--mu);font-size:13px}
+.sw{display:flex;gap:10px;justify-content:center;align-items:center;font-size:12px;color:var(--mu)}
+.sw label{display:flex;gap:6px;align-items:center;cursor:pointer}.sw input{accent-color:var(--a)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:1200px;margin:14px auto;padding:0 16px}
+nav a{padding:8px;text-align:center;border:1px solid var(--line);border-radius:10px;color:var(--tx);text-decoration:none;font-size:12px;background:#ffffff08}
+nav a:hover{border-color:var(--a);box-shadow:var(--glow)}
+main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,1fr);gap:18px;max-width:1200px;margin:0 auto;padding:0 16px 40px}
+@media(max-width:860px){main{grid-template-columns:1fr}nav{grid-template-columns:repeat(2,1fr)}}
+section,.guide,.out{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 10px;font-size:16px;color:var(--a)}h3{margin:10px 0 6px;font-size:13px;color:var(--c)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.g{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:3px}.f.w{grid-column:1/-1}.f>span{font-size:11px;color:var(--mu)}
+input,select,textarea{background:#0a0518;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit;width:100%}
+textarea{min-height:56px;resize:vertical}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--a);box-shadow:var(--glow)}
+.chk{display:flex;flex-wrap:wrap;gap:6px}.chk label{display:flex;gap:5px;align-items:center;font-size:12px;background:#ffffff0a;border:1px solid var(--line);border-radius:8px;padding:4px 8px;cursor:pointer}.chk input{width:auto;accent-color:var(--a)}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#ffffff0d;color:var(--tx);border-radius:9px;padding:7px 12px}
+button:hover{border-color:var(--a)}button.p{background:linear-gradient(90deg,var(--a),var(--b));border:0;color:#fff;font-weight:600;box-shadow:var(--glow)}
+button.d{color:#ff7a90;border-color:#6b2540}.bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.card{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:#ffffff06}
+.card h4{margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;color:var(--a);font-size:13px}
+.up{display:flex;gap:10px;align-items:center}.up label{width:62px;height:62px;border:1px dashed var(--mu);border-radius:10px;display:grid;place-items:center;cursor:pointer;overflow:hidden;flex:none;font-size:22px;color:var(--mu)}
+.up img{width:100%;height:100%;object-fit:cover}.up input[type=file]{display:none}
+.side{position:sticky;top:10px;align-self:start}@media(max-width:860px){.side{position:static}}
+#out{height:340px;font:12px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap}
+.ok{color:var(--c);font-size:12px;min-height:18px}.note{color:var(--mu);font-size:12px}
+ol,ul{margin:6px 0;padding-left:20px}.guide li{margin:3px 0;color:var(--mu)}.guide b{color:var(--tx)}
+details summary{cursor:pointer;color:var(--c);font-weight:600}
+#pbar{position:sticky;top:0;z-index:50;background:#0b0618ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:6px 16px;display:flex;gap:12px;align-items:center;font-size:12px;color:var(--mu)}
+#pt{flex:1;height:8px;border-radius:8px;background:#ffffff14;overflow:hidden}#pfill{height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:var(--glow);transition:width .3s}
+section{scroll-margin-top:48px}section details>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;color:inherit;font-weight:400}
+section details>summary::-webkit-details-marker{display:none}section details>summary::after{content:"▾";color:var(--mu);transition:transform .2s}
+section details:not([open])>summary::after{transform:rotate(-90deg)}section details[open]>summary{margin-bottom:12px}
+summary h2{margin:0;flex:1}.pc{color:var(--c);font-weight:700}
+footer{text-align:center;color:var(--mu);font-size:11px;padding:10px 0 30px}
+</style></head><body>
+<div id="pbar"><span id="ptxt"></span><div id="pt"><div id="pfill"></div></div><span id="sv">💾 บันทึกอัตโนมัติ</span></div>
+<header><h1>🎬 AI ละคร STUDIO</h1>
+<p>โปรแกรมสร้างละคร AI พร้อมจัดการนักแสดง แนบภาพอ้างอิง กำหนดเหตุการณ์รายฉาก และครบ 8 ขั้นตอน ตั้งแต่คิดพล็อต ออกแบบตัวละคร เขียนฉากและคำสั่งวิดีโอ สร้างภาพรายฉาก ไปจนถึงตัดต่อและโพสต์</p>
+<div class="sw"><label>NEON EFFECTS <input type="checkbox" id="neon" checked> เปิดเอฟเฟกต์</label><span>|</span><label>โหมดสบายตา <input type="checkbox" id="syn"> Synthwave</label></div></header>
+<nav id="nav"></nav>
+<main><div id="form"></div>
+<aside class="side">
+<div class="out"><h2>📋 Master Prompt พร้อมคัดลอก</h2>
+<p class="note">กดสร้าง Prompt แล้วคัดลอกไปใช้กับ AI ที่เลือกได้ทันที โปรแกรมนี้จัดทำคำสั่งให้ ไม่ได้สร้างวิดีโอหรือโพสต์แทนโดยอัตโนมัติ</p>
+<div class="bar"><button class="p" id="cp">คัดลอก Prompt</button><button id="dl">ดาวน์โหลด .txt</button></div>
+<textarea id="out" placeholder="Master Prompt จะปรากฏตรงนี้..."></textarea><div class="ok" id="ok"></div>
+<h3>เช็กลิสต์ 8 ขั้นตอน</h3><div class="note" style="line-height:1.8">① พล็อตและบทละคร<br>② Character sheet และล็อกตัวละคร<br>③ แบ่งฉากตามเวลา<br>④ Video prompt พร้อมกล้องและเสียง<br>⑤ Image prompt รายฉาก<br>⑥ สร้างคลิปด้วยแพลตฟอร์มที่เลือก<br>⑦ ตัดต่อ ตรวจเสียงและความต่อเนื่อง<br>⑧ ทำปก คำบรรยาย แฮชแท็ก และโพสต์</div></div>
+<div class="guide"><details open><summary>วิธีใช้งาน</summary><ol>
+<li><b>กรอกทีละขั้น</b> ① ถึง ⑧ เลือกจากเมนูหรือพิมพ์เอง ช่องที่ว่างจะให้ AI ตัดสินใจเอง</li>
+<li><b>ตัวละคร</b> กด “＋ เพิ่มตัวละคร” แนบภาพอ้างอิงได้ (ใช้อ้างชื่อไฟล์ใน Prompt ไม่ได้อัปโหลดอัตโนมัติ)</li>
+<li><b>ฉาก</b> กด “＋ เพิ่มฉาก” ระบุเหตุการณ์ การกระทำ กล้อง เสียง อารมณ์ และผลลัพธ์</li>
+<li>กด <b>✨ สร้าง Master Prompt</b> ที่ท้ายฟอร์ม แล้วกด คัดลอก หรือ ดาวน์โหลด .txt</li>
+<li>วาง Prompt ลง AI ที่ใช้ (ChatGPT, Gemini ฯลฯ) แล้วทำตามเช็กลิสต์ 8 ขั้นตอน</li></ol></details></div>
+</aside></main>
+<footer>AI LACORN STUDIO • เวอร์ชันเว็บไฟล์เดียว • ใช้ได้บนมือถือและคอมพิวเตอร์</footer>
+<script>
+const L=s=>s.split("|"),AI="ให้ AI เลือกให้เหมาะกับเรื่อง";
+// [key,label,type,data,wide]
+const S=[
+["① คิดพล็อตละคร",[
+["genre","แนวละคร","s",L("รักโรแมนติก|ดราม่าชีวิต|สยองขวัญ / เรื่องผี|ลึกลับ / สืบสวน|ตลก|ตลกปนดราม่า|กำลังภายใน / แฟนตาซี|ย้อนยุคไทย|ครอบครัว|แอ็กชัน|ธุรกิจ / แก้แค้น|เทพเซียน / ตำนาน|สัตว์พูดได้ / หมาแมว|เลือกผสมหลายแนว")],
+["format","รูปแบบ","s",L("หนังสั้นตอนเดียว|ซีรีส์หลายตอน|ละครแนวตั้งเป็นตอน|มินิซีรีส์จบใน 3 ตอน|มินิซีรีส์จบใน 5 ตอน|มินิซีรีส์จบใน 10 ตอน")],
+["title","ชื่อเรื่อง","t","เว้นว่างให้ AI ตั้งชื่อ"],
+["idea","พล็อต / ไอเดียตั้งต้น","a","พิมพ์ไอเดีย หรือเว้นว่างให้ AI คิดใหม่"],
+["eps","จำนวนตอน","s",L("1 ตอน|3 ตอน|5 ตอน|10 ตอน|20 ตอน|กำหนดเองตามเนื้อเรื่อง")],
+["ending","รูปแบบตอนจบ","s",L("หักมุมเหนือความคาดหมาย|จบสุขสมหวัง|จบเศร้า กินใจ|จบแบบค้างคาให้ติดตามตอนต่อไป|จบสะใจ คนดีชนะ|จบลึกลับชวนคิด|"+AI)],
+["detail","ความละเอียดของบท","s",L("ละเอียดมาตรฐาน|ละเอียดระดับบทภาพยนตร์มืออาชีพ|ละเอียดสูงสุด ทุกฉากมีจังหวะอารมณ์และการแสดง"),1],
+["dialog","ความเข้มข้นของบทพูด","s",L("พอดี กระชับ ไม่เยิ่นเย้อ|เข้มข้น มีการโต้ตอบและชั้นเชิง|จัดเต็ม บทสนทนายาวและลึกซึ้งตามจังหวะ"),1],
+["conflict","ระดับความขัดแย้ง","s",L("เบา เน้นความสัมพันธ์|ปานกลาง มีอุปสรรคชัดเจน|เข้มข้น มีเดิมพันและผลกระทบจริง|สูงสุด ความลับแตกหักและแรงกดดันต่อเนื่อง")],
+["arc","พัฒนาการตัวละคร","s",L("พัฒนาการเรียบง่าย|มีจุดเปลี่ยนและบทเรียนชัดเจน|ลึกซึ้ง มีความขัดแย้งในใจและการเปลี่ยนแปลงหลายชั้น")],
+["focus","สิ่งที่ต้องการให้บทเน้นเป็นพิเศษ","a","เช่น บทพูดเรียบหรู ความตึงเครียด ตัวร้ายมีเหตุผล ไม่เอาเนื้อหาที่รุนแรงเกินไป",1],
+["aud","กลุ่มผู้ชม","s",L("ผู้ชมทั่วไป|ครอบครัว|วัยรุ่น|ผู้ใหญ่|เด็ก")],
+["rate","ระดับเนื้อหา","s",L("เหมาะกับทุกวัย|PG — มีความตึงเครียดเล็กน้อย|PG-13 — แอ็กชัน/สยองขวัญปานกลาง|เข้มข้นสำหรับผู้ใหญ่โดยไม่แสดงภาพโจ่งแจ้ง")]]],
+["② สร้างตัวละคร",[
+["ccount","จำนวนตัวละครหลัก","s",L("1 คน|2 คน|3 คน|5 คน|6 คน|8 คน|10 คน|ให้ AI กำหนดตามพล็อต")],
+["csrc","ที่มาของตัวละคร","s",L("ให้ AI ออกแบบทั้งหมด|ใช้ภาพอ้างอิงที่ผู้ใช้แนบ|ผสมตัวละครจากภาพอ้างอิงและ AI|ตัวละครสัตว์ / แอนิเมชัน")],
+["style","สไตล์ภาพ","s",L("Live Action สมจริง|ภาพยนตร์ฮอลลีวูด CGI/VFX|แอนิเมชัน 3D ระดับภาพยนตร์|อนิเมะญี่ปุ่น|ภาพวาดแฟนตาซี|ละครย้อนยุคสมจริง|สารคดีสมจริง"),1],
+["CAST"],
+["cast","แนวทางคัดเลือกนักแสดง","s",L("สวยหล่อแบบธรรมชาติ สมจริง|พระนางระดับซูเปอร์สตาร์ ออร่าชัดเจน|หล่อคมเข้มและสวยสง่าแบบละครเอเชีย|สวยหล่อแบบฮอลลีวูด|หลากหลายรูปลักษณ์ แต่ทุกคนมีเสน่ห์เฉพาะตัว|ยึดภาพอ้างอิงของผู้ใช้เป็นหลัก")],
+["castx","รายละเอียดนักแสดงเพิ่มเติม","a","เช่น พระเอกหล่อสุขุม นางเอกสวยดูอบอุ่น"],
+["look","รูปลักษณ์ / เสื้อผ้า / ยุค","a","เช่น ไทยโบราณ ชุดผ้าไหม เครื่องประดับทอง"],
+["lock","ระบบล็อกตัวละคร","s",L("ล็อกเข้มงวดทุกฉาก (แนะนำ)|ล็อกใบหน้าและทรงผม|ล็อกใบหน้า เสื้อผ้า และรูปร่าง|เปลี่ยนชุดได้ตามเหตุการณ์ แต่ใบหน้าคงเดิม|ไม่ล็อก")],
+["cont","ความต่อเนื่อง","s",L("ล็อกต่อเนื่องทุกฉากและทุกตอน|ต่อเนื่องภายในตอน|ยืดหยุ่นตามเนื้อเรื่อง")],
+["keep","รายละเอียดที่ต้องคงเดิม","c",L("ใบหน้า|ทรงผม|สีผิว|รูปร่าง|เสื้อผ้า/เครื่องประดับ|เสียงประจำตัว|อายุ/สัดส่วน")]]],
+["③ เขียนคำสั่งสร้างฉาก",[
+["dur","ความยาวรวม","s",L("30 วินาที|1 นาที|1 นาที 30 วินาที|2 นาที|3 นาที|5 นาที|10 นาที|กำหนดเอง")],
+["clip","ความยาวต่อคลิป","s",L("5 วินาที|10 วินาที|15 วินาที|กำหนดตามแพลตฟอร์ม")],
+["ratio","อัตราส่วนภาพ","s",L("9:16 แนวตั้ง|16:9 แนวนอน|1:1 สี่เหลี่ยม|4:5 โพสต์แนวตั้ง|2.39:1 จอกว้างภาพยนตร์")],
+["res","ความละเอียดเป้าหมาย","s",L("1080p Full HD|2K|4K|8K หากแพลตฟอร์มรองรับ")],
+["loc","สถานที่หลัก","t","เช่น เรือนไทยริมน้ำ / เมืองอนาคต"],
+["time","ช่วงเวลา","s",L("กลางวัน|รุ่งเช้า|ยามเย็น|กลางคืน|เปลี่ยนตามฉาก|ย้อนยุค|โลกอนาคต")],
+["mood","บรรยากาศ","s",L("อบอุ่น โรแมนติก|เย็นชา ลึกลับ|มืดหม่น กดดัน|สดใส สนุกสนาน|ยิ่งใหญ่ อลังการ|สมจริงแบบชีวิตประจำวัน|เปลี่ยนตามอารมณ์ฉาก")],
+["wx","สภาพอากาศ / เอฟเฟกต์","s",L("ปกติเป็นธรรมชาติ|ฝนตกและพื้นเปียก|หมอกควันลึกลับ|พายุ ฟ้าแลบ ฟ้าร้อง|แสงเวทมนตร์ / พลังพิเศษ|ฝุ่น เศษซาก และแรงปะทะ|เลือกตามฉาก")],
+["scx","ข้อกำหนดฉากเพิ่มเติม","a","เช่น เปิดเรื่องด้วยภาพกว้างสุด ภาพต่อเนื่อง ไม่กระโดดสถานที่โดยไม่มีเหตุผล",1]]],
+["③.5 กำหนดการแสดงและสิ่งที่เกิดขึ้นในแต่ละฉาก",[
+["note","กำหนดฉากเป็นรายซีน เลือกเหตุการณ์ การกระทำเป็นลำดับ จังหวะ มุมกล้อง เสียง อารมณ์ และผลลัพธ์ได้เอง รายละเอียดจะถูกแนบเข้า Master Prompt","n"],
+["plan","การวางแผนฉาก","s",L("ให้ AI แบ่งฉากตามความยาว|ใช้รายการฉากที่ฉันกำหนด|ร่วมกับ AI ให้ AI สร้างฉากเพิ่มจากรายการของฉัน")],
+["act","ระดับการแสดง","s",L("เป็นธรรมชาติ สมจริง|อารมณ์ชัดเจนแบบละครโทรทัศน์|เข้มข้นแบบภาพยนตร์ มีปฏิกิริยาละเอียด|ดราม่าหนัก อารมณ์พุ่งแต่ไม่เกินจริง")],
+["SCENES"]]],
+["④ เขียนคำสั่งวิดีโอ",[
+["plat","แพลตฟอร์มสร้างวิดีโอ","s",L("Meta AI|Grok|Gemini / Veo|Seedance|Runway|Kling AI|PixVerse|Pika|Luma|แพลตฟอร์มอื่น / ใช้ได้ทั่วไป")],
+["cam","การเคลื่อนกล้อง","s",L("ภาพยนตร์ เคลื่อนกล้องหลากหลาย|กล้องนิ่ง เน้นอารมณ์|Tracking shot ติดตามตัวละคร|Dolly in/out|Handheld สมจริง|Drone / มุมสูง|แอ็กชันรวดเร็วและไดนามิก|Long take ต่อเนื่อง")],
+["fps","เฟรมเรต","s",L("24 fps ภาพยนตร์|30 fps|60 fps สโลว์โมชั่นลื่นไหล|ให้แพลตฟอร์มกำหนด")],
+["vfx","ระดับเอฟเฟกต์","s",L("เป็นธรรมชาติ|ปานกลาง|สูงระดับภาพยนตร์|สูงสุด CGI/VFX อลังการ")],
+["light","แสง","s",L("แสงธรรมชาติ|แสงภาพยนตร์แบบดราม่า|แสงนุ่ม โรแมนติก|แสงนีออน / ไซไฟ|แสงเทียน / โคมไฟย้อนยุค|แสงเย็นและเงาลึก|เปลี่ยนตามฉาก")],
+["tone","โทนสี","s",L("สีธรรมชาติ|โทนเย็น|โทนอุ่นทองหรูหราแบบย้อนยุค|มืดหม่นแบบหนังระทึกขวัญ|สีสดแบบแฟนตาซี|ฟิล์มวินเทจ")],
+["vreq","ข้อกำหนดวิดีโอ","c",L("ไม่มีข้อความบนภาพ|ไม่มีซับไตเติล|ภาพสมจริง รายละเอียดสูง|ป้องกันภาพกระพริบ/ตัวละครบิดเบี้ยว|การแสดงตรงกับเหตุการณ์"),1,1]]],
+["⑤ ภาพแต่ละซีน",[
+["itool","เครื่องมือสร้างภาพ","s",L("ChatGPT / ImageGen|Gemini|Midjourney|Flux|Leonardo AI|เครื่องมือใดก็ได้")],
+["iref","รูปแบบภาพอ้างอิง","s",L("ภาพนิ่งก่อนเริ่มวิดีโอทุกซีน|ภาพตัวละครแยก + ภาพฉาก|Storyboard หลายช่อง|ภาพ keyframe ต้นฉากและท้ายฉาก")],
+["isize","ขนาดภาพ / ระยะกล้อง","s",L("ผสม wide, medium, close-up|ภาพกว้างเห็นสถานที่|ภาพครึ่งตัว|ภาพใกล้ใบหน้าและอารมณ์|มุมต่ำฮีโร่|มุมสูง / bird's-eye")],
+["icons","ความสม่ำเสมอของภาพ","s",L("อ้างอิง character sheet ทุกซีน|อ้างอิงภาพซีนก่อนหน้า|ใช้ทั้ง character sheet และภาพซีนก่อนหน้า")],
+["neg","สิ่งที่ไม่ต้องการให้ปรากฏ (Negative Prompt)","a","",1,0,"ใบหน้าเปลี่ยน ตัวละครซ้ำเกินจำเป็น มือผิดรูป นิ้วเกิน แขนขาบิดเบี้ยว เสื้อผ้าเปลี่ยนโดยไม่มีเหตุผล ภาพกระพริบ วัตถุลอย ภาพแตก โลโก้ ลายน้ำ ข้อความมั่ว"]]],
+["⑥ เสียง บทพูด และการเจนวิดีโอ",[
+["aform","รูปแบบเสียง","s",L("บทพูดตัวละครเท่านั้น|ผู้บรรยายเท่านั้น|ผู้บรรยาย + บทพูดตัวละคร|ไม่มีเสียงพูด มีแต่ดนตรีและเอฟเฟกต์|บทพูด + เสียงบรรยากาศ|เลือกตามฉาก")],
+["alang","ภาษาเสียง","s",L("ภาษาไทย|ภาษาอังกฤษ|ไทยพร้อมคำบรรยายอังกฤษ|ภาษาจีน|ภาษาญี่ปุ่น|หลายภาษา")],
+["narr","เสียงผู้บรรยาย","s",L("ผู้ชาย ทุ้ม ลึก ทรงพลัง|ผู้ชาย อบอุ่น นุ่มนวล|ผู้หญิง นุ่มลึก ชวนติดตาม|ผู้หญิง สดใส เป็นธรรมชาติ|เสียงเล่าเรื่องสารคดี|ไม่ใช้ผู้บรรยาย")],
+["dstyle","รูปแบบบทพูด","s",L("พูดเป็นธรรมชาติ กระชับ|ดราม่าเข้มข้นและมีอารมณ์|ตลก จังหวะคมชัด|โบราณ / ใช้ภาษาให้เข้ายุค|แอ็กชัน ตะโกนเฉพาะจังหวะ|ไม่มีบทพูดตัวละคร")],
+["music","ดนตรีประกอบ","s",L("เลือกตามอารมณ์แต่ละฉาก|ออร์เคสตรายิ่งใหญ่|เปียโนโรแมนติก|สยองขวัญ กดดัน|ไทยประยุกต์ / เครื่องดนตรีไทย|แอ็กชันเร้าใจ|ไม่มีดนตรี")],
+["sfx","เสียงประกอบ (SFX)","s",L("เสียงสมจริงตามสิ่งที่เห็น|เสียงบรรยากาศธรรมชาติ|เสียงฝีเท้า เสื้อผ้า และการเคลื่อนไหว|เสียงเวทมนตร์ / พลังพิเศษ|เสียงผี / เสียงหลอน|น้อยที่สุด")],
+["ax","ข้อกำหนดเสียงเพิ่มเติม","a","เช่น เสียงไทยชัดเจน ไม่พูดทับกัน ผู้บรรยายต้องตรงกับภาพและเวลาขาดหาย",1]]],
+["⑦ ตัดต่อ",[
+["editor","แอปตัดต่อ","s",L("CapCut|VN Video Editor|DaVinci Resolve|Adobe Premiere Pro|แอปอื่น")],
+["trans","รูปแบบทรานซิชัน","s",L("ตัดต่อเนียนตามจังหวะเรื่อง|Hard cut กระชับ|Cross dissolve นุ่มนวล|ทรานซิชันภาพยนตร์|เอฟเฟกต์เร็วแบบโซเชียล")],
+["subs","คำบรรยายตอนตัดต่อ","s",L("ไม่ใส่ซับไตเติล|ใส่ซับภาษาไทย|ใส่ซับไทยและอังกฤษ|ใส่เฉพาะคำสำคัญ")],
+["exp","ไฟล์ส่งออก","s",L("MP4 H.264|MP4 H.265 / HEVC|ไฟล์คุณภาพสูงสำหรับเก็บต้นฉบับ")],
+["esteps","ขั้นตอนตัดต่อ","c",L("เรียงคลิปตามลำดับ|ปรับสี|มิกซ์เสียง|ดนตรี/SFX|โลโก้/อินโทร|ตรวจความต่อเนื่อง"),1]]],
+["⑧ โพสต์และเผยแพร่",[
+["post","แพลตฟอร์มโพสต์","s",L("TikTok|Facebook Reels|YouTube Shorts|YouTube วิดีโอปกติ|Instagram Reels|Facebook Page|หลายแพลตฟอร์ม")],
+["cover","รูปแบบหน้าปก","s",L("ภาพตัวละครเด่น + ชื่อเรื่อง|ฉากลึกลับชวนคลิก|ภาพอารมณ์ดราม่า|โปสเตอร์ภาพยนตร์|ไม่ใส่ข้อความบนปก")],
+["cta","คำชวนให้มีส่วนร่วม","s",L("ถามความคิดเห็นผู้ชม|ชวนติดตามตอนต่อไป|ชวนกดติดตามและแชร์|ไม่ใส่ CTA|ให้ AI เขียนให้เหมาะกับเรื่อง")],
+["tags","แฮชแท็ก","t","#ละครAI #หนังสั้น #ซีรีส์AI"],
+["pnote","ชื่อเพจ / คำอธิบาย / ข้อกำหนดโพสต์","a","เช่น ชื่อเพจ คำอธิบายคลิป กลุ่มผู้ชม หรือข้อกำหนดการลงคลิป",1]]]];
+const $=s=>document.querySelector(s),E=(h)=>{const d=document.createElement("div");d.innerHTML=h;return d.firstElementChild};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const F={};let html="",navh="";
+S.forEach(([t,fs],i)=>{navh+=`<a href="#s${i}">${t.split(" ")[0]} ${t.split(" ").slice(1).join(" ").slice(0,14)}</a>`;
+html+=`<section id="s${i}"><details${i==0?" open":""}><summary><h2>${t}</h2><span class="pc" id="pc${i}"></span></summary><div class="g">`;
+fs.forEach(f=>{const [k,lb,ty,d,w,pre,dv]=f;
+if(k==="CAST")return html+=`<div class="f w"><h3>คัดเลือกนักแสดงและจัดการตัวละคร</h3><p class="note">เพิ่ม/ลบตัวละครได้เอง แนบภาพอ้างอิงรายคนได้ ภาพจะถูกใช้เป็นข้อมูลอ้างอิงใน Prompt (ไฟล์ภาพไม่ได้ถูกอัปโหลดไปยัง AI โดยอัตโนมัติ)</p><div class="bar"><button class="p" onclick="addC()">＋ เพิ่มตัวละคร</button><button onclick="fillC()">✨ เติมนักแสดงหน้าตาดี</button><button class="d" onclick="$('#chars').innerHTML=''">ลบตัวละครทั้งหมด</button></div><div id="chars"></div></div>`;
+if(k==="SCENES")return html+=`<div class="f w"><div class="bar"><button class="p" onclick="addS()">＋ เพิ่มฉาก</button><button onclick="fillS()">✨ สร้างโครงฉากตัวอย่าง</button><button class="d" onclick="$('#scenes').innerHTML=''">ล้างรายการฉาก</button></div><div id="scenes"></div></div>`;
+if(ty==="n")return html+=`<p class="note f w">${lb}</p>`;
+F[k]=[lb,ty];const wc=(ty==="c"||w?" w":"");
+if(ty==="s")html+=`<label class="f${wc}"><span>${lb}</span><select id="${k}">${d.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>`;
+else if(ty==="t")html+=`<label class="f${wc}"><span>${lb}</span><input id="${k}" placeholder="${esc(d)}"></label>`;
+else if(ty==="a")html+=`<label class="f${wc}"><span>${lb}</span><textarea id="${k}" placeholder="${esc(d)}">${esc(f[6]||"")}</textarea></label>`;
+else html+=`<div class="f w"><span>${lb}</span><div class="chk" id="${k}">${d.map((o,j)=>`<label><input type="checkbox" value="${esc(o)}" ${dv&&j<5?"checked":""}>${o}</label>`).join("")}</div></div>`});
+html+=`</div></details></section>`});
+html=`<div class="bar"><button onclick="toggleAll(1)">เปิดทั้งหมด</button><button onclick="toggleAll(0)">พับทั้งหมด</button></div>`+html+`<div class="bar"><button class="p" id="gen">✨ สร้าง Master Prompt</button><button id="rst">ล้างค่าเริ่มใหม่</button></div>`;
+$("#form").innerHTML=html;$("#nav").innerHTML=navh;
+// characters
+let cn=0;const ROLES=["ตัวเอก","ตัวเอกหญิง/ชาย","ตัวร้าย","เพื่อนสนิท","ผู้ใหญ่/ผู้อาวุโส"];
+function addC(v={}){cn++;const id="CHAR-"+String(cn).padStart(2,"0");
+const c=E(`<div class="card ch"><h4>🎭 ตัวละคร ${cn}<button class="d" onclick="this.closest('.card').remove()">ลบตัวละคร</button></h4><div class="up"><label>＋<input type="file" accept="image/*"></label><div class="g" style="flex:1"><label class="f"><span>Character ID</span><input data-k="id" value="${id}"></label><label class="f"><span>ชื่อ/ชื่อเล่น</span><input data-k="name" value="${esc(v.name||"")}"></label></div></div>
+<div class="g" style="margin-top:8px"><label class="f"><span>บทบาท</span><input data-k="role" value="${esc(v.role||"")}"></label><label class="f"><span>อายุ / รูปร่าง</span><input data-k="age" value="${esc(v.age||"")}"></label><label class="f"><span>หน้าตา / ทรงผม</span><input data-k="face" value="${esc(v.face||"")}"></label><label class="f"><span>เสื้อผ้า / เครื่องประดับ</span><input data-k="outfit" value="${esc(v.outfit||"")}"></label><label class="f"><span>น้ำเสียง / วิธีพูด</span><input data-k="voice" value="${esc(v.voice||"")}"></label><label class="f"><span>แรงจูงใจ / ความลับ</span><input data-k="drive" value="${esc(v.drive||"")}"></label></div></div>`);
+c.querySelector("input[type=file]").onchange=e=>{const f=e.target.files[0];if(!f)return;c.dataset.file=f.name;const r=new FileReader();r.onload=()=>e.target.parentNode.innerHTML=`<img src="${r.result}">`+e.target.outerHTML;r.readAsDataURL(f)};
+$("#chars").append(c)}
+function fillC(){[{name:"นาวิน",role:"พระเอก",age:"28 ปี สูง 180",face:"หล่อคม ผมสั้นดำ",outfit:"เชิ้ตขาว เสื้อคลุมเข้ม",voice:"ทุ้ม สุขุม",drive:"ปกป้องคนที่รัก"},{name:"ใบเฟิร์น",role:"นางเอก",age:"25 ปี",face:"สวยหวาน ผมยาวดำ",outfit:"ชุดสีพาสเทล",voice:"นุ่ม อบอุ่น",drive:"ตามหาความจริง"},{name:"คุณหญิงพิมพ์",role:"ตัวร้าย",age:"50 ปี",face:"สง่า ตาคม",outfit:"ผ้าไหมสีเข้ม ไข่มุก",voice:"เรียบ เย็นชา",drive:"รักษาอำนาจและความลับ"}].forEach(addC)}
+// scenes
+let sn=0;
+function addS(v={}){sn++;const so=(o,x)=>`<select data-k="${x}">${o.map(a=>`<option>${a}</option>`).join("")}</select>`;
+$("#scenes").append(E(`<div class="card sc"><h4>🎞 ฉาก ${sn}<button class="d" onclick="this.closest('.card').remove()">ลบฉาก</button></h4><div class="g"><label class="f"><span>ชื่อฉาก</span><input data-k="name" value="${esc(v.name||"")}"></label><label class="f"><span>สถานที่ / เวลา</span><input data-k="place" value="${esc(v.place||"")}"></label><label class="f"><span>ตัวละครในฉาก</span><input data-k="who" value="${esc(v.who||"")}"></label><label class="f"><span>ความยาว</span><input data-k="len" value="${esc(v.len||"10 วินาที")}"></label><label class="f w"><span>เหตุการณ์ / การกระทำตามลำดับ</span><textarea data-k="events">${esc(v.events||"")}</textarea></label><label class="f"><span>มุมกล้อง</span>${so(["Wide","Medium","Close-up","Over-the-shoulder","Low angle","High angle"],"cam")}</label><label class="f"><span>อารมณ์</span><input data-k="emo" value="${esc(v.emo||"")}"></label><label class="f"><span>เสียง / บทพูด</span><input data-k="snd" value="${esc(v.snd||"")}"></label><label class="f"><span>ผลลัพธ์ท้ายฉาก</span><input data-k="res" value="${esc(v.res||"")}"></label></div></div>`))}
+function fillS(){[{name:"พบกันครั้งแรก",place:"ริมน้ำ ยามเย็น",who:"นาวิน, ใบเฟิร์น",events:"1) ใบเฟิร์นทำของตก 2) นาวินช่วยเก็บ 3) สบตากัน",emo:"อบอุ่น ประหลาดใจ",snd:"เสียงน้ำ ดนตรีเปียโน",res:"ทั้งคู่เริ่มสนใจกัน"},{name:"ความลับแตก",place:"ห้องรับแขก กลางคืน",who:"ใบเฟิร์น, คุณหญิงพิมพ์",events:"1) พบจดหมายเก่า 2) เผชิญหน้า 3) คุณหญิงหลบสายตา",emo:"กดดัน",snd:"เสียงนาฬิกา เงียบ",res:"ใบเฟิร์นรู้ความจริง"},{name:"บทสรุป",place:"ลานบ้าน รุ่งเช้า",who:"ทุกคน",events:"1) ให้อภัย 2) กอด 3) แสงเช้าส่อง",emo:"โล่งใจ",snd:"ดนตรีสบาย",res:"จบอย่างอบอุ่น"}].forEach(addS)}
+// prompt
+const val=k=>{const e=document.getElementById(k);if(!e)return"";return e.classList.contains("chk")?[...e.querySelectorAll("input:checked")].map(i=>i.value).join(", "):e.value.trim()};
+const row=(l,k)=>{const v=val(k);return`${l}: ${v||"ให้ AI เลือกให้เหมาะกับเรื่อง"}`};
+function build(){
+const ch=[...document.querySelectorAll(".ch")].map((c,i)=>{const g=k=>c.querySelector(`[data-k=${k}]`).value.trim()||"-";return`- ${g("id")} | ${g("name")} | บทบาท: ${g("role")} | อายุ/รูปร่าง: ${g("age")} | หน้าตา: ${g("face")} | เสื้อผ้า: ${g("outfit")} | น้ำเสียง: ${g("voice")} | แรงจูงใจ: ${g("drive")} | ภาพอ้างอิง: ${c.dataset.file||"ไม่มี"}`});
+const sc=[...document.querySelectorAll(".sc")].map((c,i)=>{const g=k=>c.querySelector(`[data-k=${k}]`).value.trim()||"-";return`ฉาก ${i+1}: ${g("name")} | ${g("place")} | ตัวละคร: ${g("who")} | ยาว ${g("len")}\n  เหตุการณ์: ${g("events")}\n  กล้อง: ${g("cam")} | อารมณ์: ${g("emo")} | เสียง: ${g("snd")} | ผลลัพธ์: ${g("res")}`});
+const R=(a)=>a.map(([l,k])=>row(l,k)).join("\n");
+return `คุณคือผู้กำกับและผู้เขียนบทละครมืออาชีพ ช่วยผลิตงานละคร AI ครบ 8 ขั้นตอนตามข้อมูลด้านล่าง ใช้ภาษาไทยที่เป็นธรรมชาติ ไม่ต้องถามกลับ หากข้อมูลใดว่างให้เลือกให้เหมาะกับเรื่อง
+
+[ข้อมูลที่ใช้]
+ชื่อเรื่อง: ${val("title")||"ให้ AI ตั้งชื่อที่ดึงดูดและเหมาะกับเรื่อง"}
+พล็อตตั้งต้น: ${val("idea")||"ให้ AI คิดพล็อตใหม่ที่มีเหตุผล มีจุดหักมุม ความขัดแย้ง และบทสรุป"}
+${R([["แนวละคร","genre"],["รูปแบบ","format"],["จำนวนตอน","eps"],["ตอนจบ","ending"],["ความละเอียดของบท","detail"],["ความเข้มข้นบทพูด","dialog"],["ระดับความขัดแย้ง","conflict"],["พัฒนาการตัวละคร","arc"],["จุดเน้นพิเศษ","focus"],["กลุ่มผู้ชม","aud"],["ระดับเนื้อหา","rate"]])}
+
+[② ตัวละคร]
+${R([["จำนวนตัวละครหลัก","ccount"],["ที่มา","csrc"],["สไตล์ภาพ","style"],["แนวทางคัดเลือกนักแสดง","cast"],["รายละเอียดนักแสดงเพิ่มเติม","castx"],["รูปลักษณ์/เสื้อผ้า/ยุค","look"],["ระบบล็อกตัวละคร","lock"],["ความต่อเนื่อง","cont"],["สิ่งที่ต้องคงเดิม","keep"]])}
+รายชื่อตัวละคร:
+${ch.join("\n")||"- ให้ AI ออกแบบตัวละครและกำหนด Character ID (CHAR-01...) ให้ครบ"}
+
+[③ ฉาก]
+${R([["ความยาวรวม","dur"],["ความยาวต่อคลิป","clip"],["อัตราส่วนภาพ","ratio"],["ความละเอียด","res"],["สถานที่หลัก","loc"],["ช่วงเวลา","time"],["บรรยากาศ","mood"],["สภาพอากาศ/เอฟเฟกต์","wx"],["ข้อกำหนดเพิ่มเติม","scx"]])}
+การวางแผนฉาก: ${val("plan")} | ระดับการแสดง: ${val("act")}
+รายการฉากที่ผู้ใช้กำหนด:
+${sc.join("\n")||"(ไม่มี — ให้ AI แบ่งฉากตามความยาว)"}
+
+[④ วิดีโอ]
+${R([["แพลตฟอร์ม","plat"],["การเคลื่อนกล้อง","cam"],["เฟรมเรต","fps"],["ระดับเอฟเฟกต์","vfx"],["แสง","light"],["โทนสี","tone"],["ข้อกำหนดวิดีโอ","vreq"]])}
+
+[⑤ ภาพรายซีน]
+${R([["เครื่องมือสร้างภาพ","itool"],["รูปแบบภาพอ้างอิง","iref"],["ขนาดภาพ/ระยะกล้อง","isize"],["ความสม่ำเสมอ","icons"],["Negative Prompt","neg"]])}
+
+[⑥ เสียง]
+${R([["รูปแบบเสียง","aform"],["ภาษา","alang"],["ผู้บรรยาย","narr"],["รูปแบบบทพูด","dstyle"],["ดนตรี","music"],["SFX","sfx"],["ข้อกำหนดเพิ่มเติม","ax"]])}
+
+[⑦ ตัดต่อ]
+${R([["แอปตัดต่อ","editor"],["ทรานซิชัน","trans"],["ซับไตเติล","subs"],["ไฟล์ส่งออก","exp"],["ขั้นตอน","esteps"]])}
+
+[⑧ โพสต์]
+${R([["แพลตฟอร์ม","post"],["หน้าปก","cover"],["CTA","cta"],["แฮชแท็ก","tags"],["รายละเอียดโพสต์","pnote"]])}
+
+รูปแบบเอาต์พุตที่ต้องส่ง:
+A. สรุปโปรเจกต์ (logline ชื่อเรื่อง แก่นเรื่อง)
+B. เรื่องย่อและโครงเรื่อง (เปิด-กลาง-จบ พร้อมจุดหักมุม)
+C. Character Bible รายคน (ID หน้าตา เสื้อผ้า น้ำเสียง แรงจูงใจ กฎล็อกตัวละคร)
+D. บทละคราย​ฉาก (สถานที่ เวลา ทำสิ่งใด บทพูด)
+E. Scene Breakdown / Storyboard พร้อม timecode
+F. Image Prompt รายซีน พร้อมอ้าง Character ID
+G. Video Prompt รายคลิป พร้อมกล้อง การแสดง และเสียง
+H. Audio Cue Sheet (บทพูด ดนตรี SFX)
+I. แผนตัดต่อ ปก คำบรรยายโพสต์ CTA และแฮชแท็ก
+ตรวจความต่อเนื่องของตัวละครและฉากก่อนส่งงาน`.replace(/\u200b/g,"")}
+const ok=m=>{$("#ok").textContent=m;setTimeout(()=>$("#ok").textContent="",3500)};
+$("#gen").onclick=()=>{$("#out").value=build();ok("สร้าง Master Prompt สำเร็จ — ตรวจค่าแล้วคัดลอกไปใช้ได้ทันที");$("#out").scrollIntoView({block:"nearest"})};
+$("#cp").onclick=async()=>{if(!$("#out").value)$("#out").value=build();try{await navigator.clipboard.writeText($("#out").value)}catch(e){$("#out").select();document.execCommand("copy")}ok("คัดลอกแล้ว")};
+$("#dl").onclick=()=>{if(!$("#out").value)$("#out").value=build();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([$("#out").value],{type:"text/plain;charset=utf-8"}));a.download="master-prompt.txt";a.click()};
+$("#rst").onclick=()=>{if(confirm("ล้างค่าทั้งหมดและเริ่มใหม่?")){noSave=true;clearTimeout(tm);try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
+$("#neon").onchange=e=>document.body.classList.toggle("nonneon",!e.target.checked);
+$("#syn").onchange=e=>document.body.classList.toggle("syn",e.target.checked);
+
+// ---- พับ/เปิด + บันทึกอัตโนมัติ ----
+const KEY="aidrama_studio_v1";let dirty=new Set(),tm,noSave=false;
+const toggleAll=o=>{document.querySelectorAll("section>details").forEach(d=>d.open=!!o);sched()};
+document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>{const d=document.querySelector(a.getAttribute("href")+">details");if(d)d.open=true;sched()}));
+function snap(){const f={};Object.keys(F).forEach(k=>{const e=document.getElementById(k);f[k]=e.classList.contains("chk")?[...e.querySelectorAll("input")].map(i=>i.checked):e.value});
+const cards=q=>[...document.querySelectorAll(q)].map(c=>{const o={};c.querySelectorAll("[data-k]").forEach(i=>o[i.dataset.k]=i.value);if(c.dataset.file)o._file=c.dataset.file;return o});
+return{f,chars:cards(".ch"),scenes:cards(".sc"),dirty:[...dirty],open:[...document.querySelectorAll("section>details")].map(d=>d.open),out:$("#out").value,neon:$("#neon").checked,syn:$("#syn").checked}}
+function save(){if(noSave)return;try{localStorage.setItem(KEY,JSON.stringify(snap()));$("#sv").textContent="💾 บันทึกแล้ว "+new Date().toLocaleTimeString("th-TH")}catch(e){$("#sv").textContent="⚠ บันทึกไม่ได้"}}
+function prog(){const n=S.length,d=S.filter((_,i)=>dirty.has("s"+i)).length;$("#pfill").style.width=d/n*100+"%";$("#ptxt").textContent="กรอกแล้ว "+d+"/"+n+" ส่วน";S.forEach((_,i)=>$("#pc"+i).textContent=dirty.has("s"+i)?"✓":"")}
+function sched(e){if(e&&e.target&&e.target.closest){const sc=e.target.closest("section");if(sc&&(e.type!=="click"||e.target.tagName==="BUTTON"))dirty.add(sc.id)}prog();clearTimeout(tm);$("#sv").textContent="💾 กำลังบันทึก…";tm=setTimeout(save,300)}
+["input","change","click"].forEach(t=>document.addEventListener(t,sched));
+addEventListener("pagehide",save);
+try{const j=localStorage.getItem(KEY);if(j){const d=JSON.parse(j);
+Object.entries(d.f||{}).forEach(([k,v])=>{const e=document.getElementById(k);if(!e)return;if(e.classList.contains("chk"))e.querySelectorAll("input").forEach((i,x)=>i.checked=!!v[x]);else e.value=v});
+const rc=(arr,add,q)=>(arr||[]).forEach(o=>{add();const c=[...document.querySelectorAll(q)].pop();Object.entries(o).forEach(([k,v])=>{if(k==="_file")c.dataset.file=v;else{const i=c.querySelector("[data-k="+k+"]");if(i)i.value=v}})});
+rc(d.chars,()=>addC(),".ch");rc(d.scenes,()=>addS(),".sc");
+dirty=new Set(d.dirty);if(d.open)document.querySelectorAll("section>details").forEach((x,i)=>x.open=!!d.open[i]);
+$("#out").value=d.out||"";$("#neon").checked=d.neon!==false;$("#syn").checked=!!d.syn;
+document.body.classList.toggle("nonneon",!$("#neon").checked);document.body.classList.toggle("syn",$("#syn").checked);
+$("#sv").textContent="💾 กู้คืนข้อมูลที่บันทึกไว้แล้ว"}}catch(e){}
+prog();
+</script></body></html>
